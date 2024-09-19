@@ -1,0 +1,4 @@
+This one is short, and no stretch goals available. It is tricky to get it right, however.
+
+Re-implement the example in section 7.10.2 using any simple, out of the box classifier (like K nearest neighbors from sci-kit). 
+Reproduce the results for the incorrect and correct way of doing cross-validation.

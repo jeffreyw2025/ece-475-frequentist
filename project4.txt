@@ -1,0 +1,29 @@
+For this assignment, you will learn how to use and tune a common gradient boosted tree package XGBoost:
+
+https://xgboost.readthedocs.io/en/latest/
+
+If there is another library you are familiar with, feel free to use that. Do not use Sci-kit.
+
+
+First, select one of the datasets from section 10.14 of the test (either California Housing or New Zealand Fish) 
+and replicate the analysis, including the plots. You don't have to do the maps. 
+
+Next, select a dataset of your choice and perform a similar analysis. 
+You can perform classification or regression, your choice. 
+This should be a more complicated, and if you want, messier, dataset than the ones we've looked at so far. 
+Use the built-in functions that come with the xgboost package to tune the model and optimize your performance, 
+and determine the feature importance.  As this assignment is more focused on using a library, 
+I will be expecting a more thoughtful analysis of the results. 
+Specifically, you are to discuss the feature importance metrics. Do they make sense? 
+Are there any features that are non-intuitive that might have
+
+For some more details on XGBoost, you can have a look at : https://arxiv.org/pdf/1603.02754v3.pdf 
+and https://medium.com/@gabrieltseng/gradient-boosting-and-xgboost-c306c1bcfaf5
+
+Stretch goal, up to 5 points. Go deeper into feature importance, use the Shapley library:
+
+https://shap.readthedocs.io/en/latest/overviews.html
+
+And do an additional feature importance analysis using this library. 
+You can use XGBoost and/or other algorithms. Compare the results to the XGBoost results. 
+Up to 5 points stretch goal points awarded based on how thorough your analysis is, and how well written your results are.
