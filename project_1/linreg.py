@@ -4,7 +4,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import sklearn as skl
+from sklearn import linear_model as lmod
 
 np.random.seed(0x46B21B55)  # Seed for consistent results
 # Miscellaneous Function Definitions
@@ -72,42 +72,57 @@ print(z_table)
 
 # Part 2 - Ridge Regression
 
-# Normalize data for parts 2 and 3
+# Normalize inputs for parts 2 and 3
 
-dataset = np.divide(
-    dataset - np.mean(dataset, axis=0), np.sqrt(np.var(dataset, axis=0))
-)
-dataset[:, 0] = 1  # Reinitialize first column to all 1s to represent bias term
-
-x_train = dataset[0:testset_start - 1, 0:9]
-y_train = dataset[0:testset_start - 1, 9]
-x_test = dataset[testset_start:validation_start - 1, 0:9]
-y_test = dataset[testset_start:validation_start - 1, 9]
-x_valid = dataset[validation_start:, 0:9]
 y_valid = dataset[validation_start:, 9]
+dataset[:, 0:9] = np.divide(
+    dataset[:, 0:9] - np.mean(dataset[:, 0:9], axis=0),
+    np.sqrt(np.var(dataset[:, 0:9], axis=0))
+)
+
+# We don't need to include the bias term here this time
+x_train = dataset[0:testset_start - 1, 1:9]
+x_test = dataset[testset_start:validation_start - 1, 1:9]
+x_valid = dataset[validation_start:, 1:9]
 
 betas = np.zeros((101, 9))
+betas[:, 0] = np.mean(dataset[:, 9])  # Initialize first column to represent bias term
 i_opt = 0
-mse_min = float("inf")
+rss_min = float("inf")
 for i in range(101):  # Sweep lambda from 0 to 10 in increments of 0.1
     lbd = i / 10
     # Implements beta = (X^T*X - lambda*I_{p+1})^-1*X^T*Y
-    beta_est = (
-        np.linalg.inv(x_train.T @ x_train - np.eye(len(x_train[0])) * lbd)
+    beta_ridge = (
+        np.linalg.inv((x_train.T @ x_train) - np.eye(len(x_train[0])) * lbd)
         @ x_train.T
         @ y_train
     )
-    y_est = x_valid @ beta_est
-    mse = np.mean(np.power((y_test - y_hat), 2))
-    betas[i] = beta_est
-    if mse < mse_min:
-        mse_min = mse
+    y_est = x_valid @ beta_ridge
+    rss = np.sum(np.power((y_valid - y_est), 2)) + lbd * (beta_ridge.T @ beta_ridge)
+    print("lambda = %f, RSS = %f" % (lbd, rss))
+
+    betas[i, 1:] = beta_ridge
+    if rss < rss_min:
+        rss_min = rss
         i_opt = i
 lambda_opt = i_opt / 10
 
 plt.figure()
 plt.plot(np.arange(101), betas)
+plt.title("Prostate Cancer Ridge Regression Weights")
+plt.xlabel("lambda")
+plt.ylabel("Predictor Weight")
 plt.axvline(x=lambda_opt, color="black", linestyle="--")
-plt.show()
+plt.legend(["bias"] + data_predictors)
+plt.savefig("prostate_ridge_plot.png")
 
 # Part 3 - Lasso Regression
+betas = np.zeros((101, 9))
+betas[:, 0] = np.mean(dataset[:, 9])  # Initialize first column to represent bias term
+i_opt = 0
+rss_min = float("inf")
+for lbd in np.linspace(0.1, 10, 100):
+    lasso_reg = lmod.Lasso(alpha=i)
+    lasso_reg.fit(x_train, y_train)
+    beta_lasso = lasso_reg.coef_
+    rss = np.sum(np.power((y_valid - y_est), 2)) + lbd * (beta_lasso.T @ beta_lasso)
