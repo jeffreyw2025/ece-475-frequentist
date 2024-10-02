@@ -15,7 +15,8 @@ Include your results in the % correct table.
 Use the validation dataset to select the optimal lambda and determine the most important features. 
 Do those features agree with the stepwise feature selection?
 
-There are lots of ways to implement the L1 penalty,  several detailed in this paper:  https://www.aclweb.org/anthology/P09-1054.pdf
+There are lots of ways to implement the L1 penalty, several detailed in this paper: 
+https://www.aclweb.org/anthology/P09-1054.pdf
 
 Stretch goal #2 (3 points): Extend your unregularized logistic regression to mutlinomial regression(i.e. more than binary classification). 
 It is a pretty straightforward extension, but its not covered in elements of stats. 
