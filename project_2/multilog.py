@@ -27,7 +27,7 @@ def compute_base_loss(X, Y, w):
     loss = 0
     for m in range(len(X)):
         for n in range(len(Y[0])):
-            loss -= Y[m,n] * np.log(sigmoid(w[:,n], X[m,:]))
+            loss += Y[m,n] * np.log(sigmoid(w[:,n], X[m,:]))
     return loss
 
 def generate_T_matrix(Y, num_classes): # Each row of the t array is zeroes except for a 1 in the column corresponding to a class in Y
@@ -59,7 +59,7 @@ def main():
     x_test = dataset[testset_start:, 0:num_inputs+1]
     y_test = dataset[testset_start:, num_inputs+1]
 
-    alpha = 0.05
+    alpha = 0.03
     w = np.random.randn(len(data_predictors) + 1, num_classes) # W becomes a matrix under multinomal classification
     w = SGD(x_train, generate_T_matrix(y_train, num_classes), w, alpha)
     y_hat = np.argmax(sigmoid(x_test.T, w), axis = 1)
@@ -75,7 +75,7 @@ def main():
         "Difference": regression_accuracy-baseline_accuracy,
     }
     acc_table = pd.DataFrame(data=accuracies, index = ["Accuracy (%)"])
-    print("Test data Accuracy by Model")
+    print("Multinomial Logistic Regression Test Data data Accuracy by Model")
     print(acc_table)
 
 main()

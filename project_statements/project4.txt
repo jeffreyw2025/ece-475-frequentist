@@ -4,7 +4,6 @@ https://xgboost.readthedocs.io/en/latest/
 
 If there is another library you are familiar with, feel free to use that. Do not use Sci-kit.
 
-
 First, select one of the datasets from section 10.14 of the test (either California Housing or New Zealand Fish) 
 and replicate the analysis, including the plots. You don't have to do the maps. 
 
@@ -12,7 +11,7 @@ Next, select a dataset of your choice and perform a similar analysis.
 You can perform classification or regression, your choice. 
 This should be a more complicated, and if you want, messier, dataset than the ones we've looked at so far. 
 Use the built-in functions that come with the xgboost package to tune the model and optimize your performance, 
-and determine the feature importance.  As this assignment is more focused on using a library, 
+and determine the feature importance. As this assignment is more focused on using a library, 
 I will be expecting a more thoughtful analysis of the results. 
 Specifically, you are to discuss the feature importance metrics. Do they make sense? 
 Are there any features that are non-intuitive that might have
