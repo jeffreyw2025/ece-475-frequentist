@@ -8,6 +8,12 @@ import matplotlib.pyplot as plt
 def sigmoid(W, X):
     return np.divide(1, 1 + np.exp(-W.T @ X))
 
+# Evaluates the softmax for class j
+def class_softmax(W, X, j):
+    activations = W.T @ X
+    transformed_activations = np.exp(activations)/np.sum(np.exp(activations))
+    return transformed_activations[j]
+
 def SGD(X_train, Y_train, W_init, learn_rate):
     w = W_init # We assume w is a matrix with rows equal to # of parameters and cols equal to # of classes, X[i,:]s are row vectors
     num_observations = len(X_train)
@@ -15,7 +21,7 @@ def SGD(X_train, Y_train, W_init, learn_rate):
     losses = np.zeros((num_observations,1))
     for i in range(num_observations):
         for j in range(num_classes):
-            w[:,j] += learn_rate * (Y_train[i,j] - sigmoid(w[:,j], X_train[i,:])) * X_train[i,:] # This is training classes "independently"
+            w[:,j] += learn_rate * (Y_train[i,j] - class_softmax(w, X_train[i,:], j)) * X_train[i,:] # This is training classes "independently"
         losses[i] = compute_base_loss(X_train, Y_train, w)
     plt.figure()
     plt.plot(np.arange(num_observations), losses)
@@ -27,7 +33,7 @@ def compute_base_loss(X, Y, w):
     loss = 0
     for m in range(len(X)):
         for n in range(len(Y[0])):
-            loss += Y[m,n] * np.log(sigmoid(w[:,n], X[m,:]))
+            loss += Y[m,n] * np.log(class_softmax(w, X[m,:], n))
     return loss
 
 def generate_T_matrix(Y, num_classes): # Each row of the t array is zeroes except for a 1 in the column corresponding to a class in Y
@@ -61,6 +67,7 @@ def main():
 
     alpha = 0.03
     w = np.random.randn(len(data_predictors) + 1, num_classes) # W becomes a matrix under multinomal classification
+    print(np.shape(w))
     w = SGD(x_train, generate_T_matrix(y_train, num_classes), w, alpha)
     y_hat = np.argmax(sigmoid(x_test.T, w), axis = 1)
     baseline_guess = np.argmax([np.sum(y_test == 0), np.sum(y_test == 1), np.sum(y_test == 2)])
