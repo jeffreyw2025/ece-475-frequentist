@@ -1,4 +1,4 @@
-# Jeffrey Wong | ECE-472 | Project #3
+# Jeffrey Wong | ECE-475 | Project #3
 # Model Validation
 
 import numpy as np
